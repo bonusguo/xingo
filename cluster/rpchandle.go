@@ -5,8 +5,8 @@ package cluster
 */
 import (
 	"fmt"
-	"github.com/viphxin/xingo/logger"
-	"github.com/viphxin/xingo/utils"
+	"github.com/bonusguo/xingo/logger"
+	"github.com/bonusguo/xingo/utils"
 	"math/rand"
 	"reflect"
 	"time"

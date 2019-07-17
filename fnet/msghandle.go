@@ -5,13 +5,13 @@ package fnet
 */
 import (
 	"fmt"
-	"github.com/viphxin/xingo/logger"
-	"github.com/viphxin/xingo/utils"
+	"github.com/bonusguo/xingo/logger"
+	"github.com/bonusguo/xingo/utils"
 	"reflect"
+	"runtime/debug"
 	"strconv"
 	"strings"
 	"time"
-	"runtime/debug"
 )
 
 type MsgHandle struct {
@@ -79,21 +79,21 @@ func (this *MsgHandle) AddRouter(router interface{}) {
 	// this.Apis[2].Call([]reflect.Value{reflect.ValueOf(&PkgAll{})})
 }
 
-func (this *MsgHandle)HandleError(err interface{}){
-        if err != nil{
-               debug.PrintStack()
-        }
+func (this *MsgHandle) HandleError(err interface{}) {
+	if err != nil {
+		debug.PrintStack()
+	}
 }
 
 func (this *MsgHandle) StartWorkerLoop(poolSize int) {
-	if utils.GlobalObject.IsThreadSafeMode(){
+	if utils.GlobalObject.IsThreadSafeMode() {
 		//线程安全模式所有的逻辑都在一个goroutine处理, 这样可以实现无锁化服务
 		this.TaskQueue[0] = make(chan *PkgAll, utils.GlobalObject.MaxWorkerLen)
-		go func(){
+		go func() {
 			logger.Info("init thread mode workpool.")
-			for{
+			for {
 				select {
-				case data := <- this.TaskQueue[0]:
+				case data := <-this.TaskQueue[0]:
 					if f, ok := this.Apis[data.Pdata.MsgId]; ok {
 						//存在
 						st := time.Now()
@@ -103,12 +103,12 @@ func (this *MsgHandle) StartWorkerLoop(poolSize int) {
 					} else {
 						logger.Error(fmt.Sprintf("not found api:  %d", data.Pdata.MsgId))
 					}
-				case delaytask := <- utils.GlobalObject.GetSafeTimer().GetTriggerChannel():
+				case delaytask := <-utils.GlobalObject.GetSafeTimer().GetTriggerChannel():
 					delaytask.Call()
 				}
 			}
 		}()
-	}else{
+	} else {
 		for i := 0; i < poolSize; i += 1 {
 			c := make(chan *PkgAll, utils.GlobalObject.MaxWorkerLen)
 			this.TaskQueue[i] = c

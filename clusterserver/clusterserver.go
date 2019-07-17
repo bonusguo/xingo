@@ -2,12 +2,12 @@ package clusterserver
 
 import (
 	"fmt"
-	"github.com/viphxin/xingo/cluster"
-	"github.com/viphxin/xingo/fnet"
-	"github.com/viphxin/xingo/fserver"
-	"github.com/viphxin/xingo/iface"
-	"github.com/viphxin/xingo/logger"
-	"github.com/viphxin/xingo/utils"
+	"github.com/bonusguo/xingo/cluster"
+	"github.com/bonusguo/xingo/fnet"
+	"github.com/bonusguo/xingo/fserver"
+	"github.com/bonusguo/xingo/iface"
+	"github.com/bonusguo/xingo/logger"
+	"github.com/bonusguo/xingo/utils"
 	"net/http"
 	"os"
 	"os/signal"

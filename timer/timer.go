@@ -4,7 +4,7 @@ import (
 	"time"
 	"reflect"
 	"fmt"
-	"github.com/viphxin/xingo/logger"
+	"github.com/bonusguo/xingo/logger"
 )
 
 type DelayCall struct {

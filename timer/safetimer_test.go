@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 	"sync/atomic"
-	"github.com/viphxin/xingo/logger"
+	"github.com/bonusguo/xingo/logger"
 )
 
 func test(a ...interface{}) {

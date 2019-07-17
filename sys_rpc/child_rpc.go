@@ -2,12 +2,12 @@ package sys_rpc
 
 import (
 	"fmt"
-	"github.com/viphxin/xingo/cluster"
-	"github.com/viphxin/xingo/clusterserver"
-	"github.com/viphxin/xingo/logger"
-	"time"
-	"github.com/viphxin/xingo/utils"
+	"github.com/bonusguo/xingo/cluster"
+	"github.com/bonusguo/xingo/clusterserver"
+	"github.com/bonusguo/xingo/logger"
+	"github.com/bonusguo/xingo/utils"
 	"os"
+	"time"
 )
 
 type ChildRpc struct {
@@ -25,30 +25,29 @@ func (this *ChildRpc) RootTakeProxy(request *cluster.RpcRequest) {
 /*
 关闭节点信号
 */
-func (this *ChildRpc) CloseServer(request *cluster.RpcRequest){
+func (this *ChildRpc) CloseServer(request *cluster.RpcRequest) {
 	delay := request.Rpcdata.Args[0].(int)
 	logger.Warn("server close kickdown.", delay, "second...")
-	time.Sleep(time.Duration(delay)*time.Second)
+	time.Sleep(time.Duration(delay) * time.Second)
 	utils.GlobalObject.ProcessSignalChan <- os.Kill
 }
 
 /*
 重新加载配置文件
 */
-func (this *ChildRpc) ReloadConfig(request *cluster.RpcRequest){
+func (this *ChildRpc) ReloadConfig(request *cluster.RpcRequest) {
 	delay := request.Rpcdata.Args[0].(int)
 	logger.Warn("server ReloadConfig kickdown.", delay, "second...")
-	time.Sleep(time.Duration(delay)*time.Second)
+	time.Sleep(time.Duration(delay) * time.Second)
 	clusterserver.GlobalClusterServer.Cconf.Reload()
 	utils.GlobalObject.Reload()
 	logger.Info("reload config.")
 }
 
-
 /*
 检查节点是否下线
 */
-func (this *ChildRpc) CheckAlive(request *cluster.RpcRequest)(response map[string]interface{}){
+func (this *ChildRpc) CheckAlive(request *cluster.RpcRequest) (response map[string]interface{}) {
 	logger.Debug("CheckAlive!")
 	response = make(map[string]interface{})
 	response["name"] = clusterserver.GlobalClusterServer.Name
@@ -58,13 +57,13 @@ func (this *ChildRpc) CheckAlive(request *cluster.RpcRequest)(response map[strin
 /*
 通知节点掉线（父节点或子节点）
 */
-func (this *ChildRpc)NodeDownNtf(request *cluster.RpcRequest) {
+func (this *ChildRpc) NodeDownNtf(request *cluster.RpcRequest) {
 	isChild := request.Rpcdata.Args[0].(bool)
 	nodeName := request.Rpcdata.Args[1].(string)
 	logger.Debug(fmt.Sprintf("node %s down ntf.", nodeName))
 	if isChild {
 		clusterserver.GlobalClusterServer.RemoveChild(nodeName)
-	}else{
+	} else {
 		clusterserver.GlobalClusterServer.RemoveRemote(nodeName)
 	}
 }

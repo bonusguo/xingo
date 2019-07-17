@@ -2,11 +2,11 @@ package fserver
 
 import (
 	"fmt"
-	"github.com/viphxin/xingo/fnet"
-	"github.com/viphxin/xingo/iface"
-	"github.com/viphxin/xingo/logger"
-	"github.com/viphxin/xingo/timer"
-	"github.com/viphxin/xingo/utils"
+	"github.com/bonusguo/xingo/fnet"
+	"github.com/bonusguo/xingo/iface"
+	"github.com/bonusguo/xingo/logger"
+	"github.com/bonusguo/xingo/timer"
+	"github.com/bonusguo/xingo/utils"
 	"net"
 	"os"
 	"os/signal"

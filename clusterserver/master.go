@@ -2,11 +2,11 @@ package clusterserver
 
 import (
 	"fmt"
-	"github.com/viphxin/xingo/cluster"
-	"github.com/viphxin/xingo/fserver"
-	"github.com/viphxin/xingo/iface"
-	"github.com/viphxin/xingo/logger"
-	"github.com/viphxin/xingo/utils"
+	"github.com/bonusguo/xingo/cluster"
+	"github.com/bonusguo/xingo/fserver"
+	"github.com/bonusguo/xingo/iface"
+	"github.com/bonusguo/xingo/logger"
+	"github.com/bonusguo/xingo/utils"
 	"sync"
 	"time"
 )
@@ -16,10 +16,10 @@ const (
 )
 
 type Master struct {
-	OnlineNodes map[string]bool
-	Cconf       *cluster.ClusterConf
-	Childs      *cluster.ChildMgr
-	TelnetServer   iface.Iserver
+	OnlineNodes  map[string]bool
+	Cconf        *cluster.ClusterConf
+	Childs       *cluster.ChildMgr
+	TelnetServer iface.Iserver
 	sync.RWMutex
 }
 
@@ -47,11 +47,11 @@ func NewMaster(path string) *Master {
 	}
 
 	//telnet debug tool
-	if GlobalMaster.Cconf.Master.DebugPort > 0{
-		if GlobalMaster.Cconf.Master.Host != ""{
+	if GlobalMaster.Cconf.Master.DebugPort > 0 {
+		if GlobalMaster.Cconf.Master.Host != "" {
 			GlobalMaster.TelnetServer = fserver.NewTcpServer("telnet_server", "tcp4", GlobalMaster.Cconf.Master.Host,
 				GlobalMaster.Cconf.Master.DebugPort, 100, cluster.NewTelnetProtocol())
-		}else{
+		} else {
 			GlobalMaster.TelnetServer = fserver.NewTcpServer("telnet_server", "tcp4", "127.0.0.1",
 				GlobalMaster.Cconf.Master.DebugPort, 100, cluster.NewTelnetProtocol())
 		}
@@ -75,7 +75,7 @@ func DoConnectionLost(fconn iface.Iconnection) {
 
 func (this *Master) StartMaster() {
 	s := fserver.NewServer()
-	if GlobalMaster.TelnetServer != nil{
+	if GlobalMaster.TelnetServer != nil {
 		this.TelnetServer.Start()
 	}
 	//check node alive tick
@@ -107,7 +107,7 @@ func (this *Master) RemoveNode(name string) {
 
 }
 
-func (this *Master)CheckChildsAlive(params ...interface{}) {
+func (this *Master) CheckChildsAlive(params ...interface{}) {
 	childs := this.Childs.GetChilds()
 	for _, child := range childs {
 		_, err := child.CallChildForResult("CheckAlive")

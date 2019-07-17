@@ -1,8 +1,8 @@
 package timer
 
 import (
+	"github.com/bonusguo/xingo/logger"
 	"sync"
-	"github.com/viphxin/xingo/logger"
 	"fmt"
 	"time"
 	"errors"

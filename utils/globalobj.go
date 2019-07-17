@@ -2,13 +2,13 @@ package utils
 
 import (
 	"encoding/json"
-	"github.com/viphxin/xingo/iface"
-	"github.com/viphxin/xingo/logger"
+	"github.com/bonusguo/xingo/iface"
+	"github.com/bonusguo/xingo/logger"
+	"github.com/bonusguo/xingo/timer"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
-	"os"
-	"github.com/viphxin/xingo/timer"
 )
 
 type GlobalObj struct {
@@ -25,28 +25,28 @@ type GlobalObj struct {
 	RpcSProtoc             iface.IServerProtocol
 	RpcCProtoc             iface.IClientProtocol
 	Host                   string
-	DebugPort              int          //telnet port 用于单机模式
-	WriteList              []string     //telnet ip list
+	DebugPort              int      //telnet port 用于单机模式
+	WriteList              []string //telnet ip list
 	TcpPort                int
 	MaxConn                int
-	IntraMaxConn           int          //内部服务器最大连接数
+	IntraMaxConn           int //内部服务器最大连接数
 	//log
-	LogPath          string
-	LogName          string
-	MaxLogNum        int32
-	MaxFileSize      int64
-	LogFileUnit      logger.UNIT
-	LogLevel         logger.LEVEL
-	SetToConsole     bool
-	LogFileType      int32
-	PoolSize         int32
-	MaxWorkerLen     int32
-	MaxSendChanLen   int32
-	FrameSpeed       uint8
-	Name             string
-	MaxPacketSize    uint32
-	FrequencyControl string //  100/h, 100/m, 100/s
-	CmdInterpreter   iface.ICommandInterpreter //xingo debug tool Interpreter
+	LogPath           string
+	LogName           string
+	MaxLogNum         int32
+	MaxFileSize       int64
+	LogFileUnit       logger.UNIT
+	LogLevel          logger.LEVEL
+	SetToConsole      bool
+	LogFileType       int32
+	PoolSize          int32
+	MaxWorkerLen      int32
+	MaxSendChanLen    int32
+	FrameSpeed        uint8
+	Name              string
+	MaxPacketSize     uint32
+	FrequencyControl  string                    //  100/h, 100/m, 100/s
+	CmdInterpreter    iface.ICommandInterpreter //xingo debug tool Interpreter
 	ProcessSignalChan chan os.Signal
 	safeTimerScheduel *timer.SafeTimerScheduel
 }
@@ -66,19 +66,19 @@ func (this *GlobalObj) GetFrequency() (int, string) {
 	}
 }
 
-func (this *GlobalObj)IsThreadSafeMode()bool{
-	if this.PoolSize == 1{
+func (this *GlobalObj) IsThreadSafeMode() bool {
+	if this.PoolSize == 1 {
 		return true
-	}else{
+	} else {
 		return false
 	}
 }
 
-func (this *GlobalObj)GetSafeTimer() *timer.SafeTimerScheduel{
+func (this *GlobalObj) GetSafeTimer() *timer.SafeTimerScheduel {
 	return this.safeTimerScheduel
 }
 
-func (this *GlobalObj)Reload(){
+func (this *GlobalObj) Reload() {
 	//读取用户自定义配置
 	data, err := ioutil.ReadFile("conf/server.json")
 	if err != nil {
@@ -87,10 +87,10 @@ func (this *GlobalObj)Reload(){
 	err = json.Unmarshal(data, this)
 	if err != nil {
 		panic(err)
-	}else{
+	} else {
 		ReSettingLog()
 		//init safetimer
-		if GlobalObject.safeTimerScheduel == nil && GlobalObject.IsThreadSafeMode(){
+		if GlobalObject.safeTimerScheduel == nil && GlobalObject.IsThreadSafeMode() {
 			GlobalObject.safeTimerScheduel = timer.NewSafeTimerScheduel()
 		}
 	}
@@ -100,7 +100,7 @@ var GlobalObject *GlobalObj
 
 func init() {
 	GlobalObject = &GlobalObj{
-		TcpServers: make(map[string]iface.Iserver),
+		TcpServers:             make(map[string]iface.Iserver),
 		Host:                   "0.0.0.0",
 		TcpPort:                8109,
 		MaxConn:                12000,

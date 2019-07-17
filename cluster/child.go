@@ -3,8 +3,8 @@ package cluster
 import (
 	"errors"
 	"fmt"
-	"github.com/viphxin/xingo/iface"
-	"github.com/viphxin/xingo/logger"
+	"github.com/bonusguo/xingo/iface"
+	"github.com/bonusguo/xingo/logger"
 	"math/rand"
 	"strings"
 	"sync"

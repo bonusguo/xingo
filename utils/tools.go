@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"github.com/viphxin/xingo/logger"
+	"github.com/bonusguo/xingo/logger"
 	"net/http"
 	"reflect"
 	"runtime/debug"
